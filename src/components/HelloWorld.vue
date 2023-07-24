@@ -2,27 +2,41 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <a-space direction="vertical">
-      <a-input v-model:value="value" placeholder="Basic usage" />
-      <a-input v-model:value.lazy="value1" autofocus placeholder="Lazy usage" />
+      <form>
+        <a-input v-model:value.lazy="formData.name" placeholder="select your name" />
+        <a-input
+          v-model:value.lazy="formData.email"
+          autofocus
+          placeholder="identification"
+        />
+        <button type="submit" @click.prevent="submitForm">Submit</button>
+      </form>
     </a-space>
   </div>
 </template>
 
 <script>
-import { watch, ref } from "vue";
-const value = ref("");
-const value1 = ref("");
-watch(value, () => {
-  console.log(value.value);
-});
-watch(value1, () => {
-  console.log(value1.value);
-});
+import { ref } from "vue"; // Import ref from Vue 3
 
 export default {
-  name: "HelloWorld",
-  props: {
-    msg: String,
+  setup() {
+    const msg = "who are you";
+    const formData = ref({
+      name: "",
+      email: "",
+      message: "",
+    });
+
+    function submitForm() {
+      // You can handle the form submission here
+      console.log("Form Data:", formData.value);
+    }
+
+    return {
+      msg,
+      formData,
+      submitForm,
+    };
   },
 };
 </script>
