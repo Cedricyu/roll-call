@@ -21,4 +21,17 @@ app.post('/add/:id/:name',async(req, res, next) => {
     res.send("Successfully added student!"); // Sending a response back to the client
 })
 
-app.listen(8090, ()=>{console.log("listening the post 8090")})
+const port = 8090;
+const host = '0.0.0.0'; // Listen on all available network interfaces
+
+const os = require('os');
+
+const networkInterfaces = os.networkInterfaces();
+// console.log(networkInterfaces);
+
+const hostIP = networkInterfaces['ens33'][0].address
+
+app.listen(port, host, () => {
+    console.log("Server is running at http://" + hostIP + ":" + port);
+    console.log("Running on port " + port);
+});
