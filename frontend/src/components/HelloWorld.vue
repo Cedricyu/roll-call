@@ -32,7 +32,7 @@ export default {
 
     function submitForm() {
       // You can handle the form submission here
-      const hostIP = "192.168.8.124";
+      const hostIP = "192.168.0.67";
 
       fetch(`http://${hostIP}:8090/get/${formData.value.name}`)
         .then((response) => response.json())

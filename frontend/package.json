@@ -16,6 +16,7 @@
     "core-js": "^3.8.3",
     "cors": "^2.8.5",
     "crypto-browserify": "^3.12.0",
+    "element-plus": "^2.3.8",
     "express": "^4.18.2",
     "mysql": "^2.18.1",
     "mysql2": "^3.5.2",
@@ -25,7 +26,8 @@
     "url": "^0.11.1",
     "util": "^0.12.5",
     "vue": "^3.2.26",
-    "vue-router": "^4.2.4"
+    "vue-router": "^4.2.4",
+    "vue-sidebar-menu-akahon": "^1.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
