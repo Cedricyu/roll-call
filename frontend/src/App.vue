@@ -4,8 +4,8 @@
     <VueSidebarMenuAkahon
       menuIcon="bxl-vuejs"
       menuTitle="roll-call"
-      :menuItems="menuItems" 
-      isUsedVueRouter = "true"
+      :menuItems="menuItems"
+      isUsedVueRouter="true"
     />
   </div>
 </template>
@@ -22,22 +22,22 @@ export default {
     return {
       menuItems: [
         {
-          link: '/',
-          name: 'User',
-          tooltip: 'User',
-          icon: 'bx-user',
+          link: "/",
+          name: "User",
+          tooltip: "User",
+          icon: "bx-user",
         },
         {
-          link: '/search',
-          name: 'Search',
-          tooltip: 'Setting',
-          icon: 'bx-search-alt',
+          link: "/search",
+          name: "Search",
+          tooltip: "Setting",
+          icon: "bx-search-alt",
         },
         {
-          link: '/',
-          name: 'Setting',
-          tooltip: 'Setting',
-          icon: 'bx-cog',
+          link: "/",
+          name: "Setting",
+          tooltip: "Setting",
+          icon: "bx-cog",
         },
       ],
     };

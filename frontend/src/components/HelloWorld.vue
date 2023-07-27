@@ -7,14 +7,19 @@
           v-model:value.lazy="formData.name"
           placeholder="select your name"
         />
-        <!-- <a-input
-          v-model:value.lazy="formData.email"
-          autofocus
-          placeholder="identification"
-        /> -->
         <button type="submit" @click.prevent="submitForm">Submit</button>
       </form>
     </a-space>
+  </div>
+  <div id="profile" class="container" v-if="student_name !== ''">
+    <el-card class="box-card">
+      <template #header>
+        <div class="card-header">
+          <span>{{ student_name }}</span>
+          <el-button class="button" text>Operation button</el-button>
+        </div>
+      </template>
+    </el-card>
   </div>
 </template>
 
@@ -30,6 +35,8 @@ export default {
       message: "",
     });
 
+    var student_name = ref("");
+
     function submitForm() {
       // You can handle the form submission here
       const hostIP = "192.168.0.67";
@@ -37,21 +44,19 @@ export default {
       fetch(`http://${hostIP}:8090/get/${formData.value.name}`)
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
-          const appendedElement = document.createElement("div");
-          appendedElement.textContent = `I am ${data.name}`;
-          document.querySelector(".hello").appendChild(appendedElement);
+          student_name.value = data.name;
         })
         .catch((error) => {
           console.error("Error fetching user data:", error);
         });
-      console.log("Form Data:", formData.value);
+      // console.log("Form Data:", formData.value);
     }
 
     return {
       msg,
       formData,
       submitForm,
+      student_name,
     };
   },
 };
@@ -72,5 +77,30 @@ li {
 }
 a {
   color: #42b983;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.text {
+  font-size: 14px;
+}
+
+.item {
+  margin-bottom: 18px;
+}
+
+.box-card {
+  width: 480px;
+  flex-direction: column;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
