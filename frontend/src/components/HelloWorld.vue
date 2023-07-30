@@ -39,9 +39,9 @@ export default {
 
     function submitForm() {
       // You can handle the form submission here
-      const hostIP = "192.168.0.67";
+      const hostIP = process.env.VUE_APP_BACKEND_URL; // Access the environment variable
 
-      fetch(`http://${hostIP}:8090/get/${formData.value.name}`)
+      fetch(`http://${hostIP}:8090/students/${formData.value.name}`)
         .then((response) => response.json())
         .then((data) => {
           student_name.value = data.name;

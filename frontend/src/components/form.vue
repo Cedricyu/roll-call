@@ -28,24 +28,27 @@ export default {
     const formData = ref({
       name: "",
       id: "",
-      message: "",
     });
 
     function submitForm() {
       // You can handle the form submission here
-      const hostIP = "192.168.0.67";
+      const hostIP = process.env.VUE_APP_BACKEND_URL; // Access the environment variable
 
-      fetch(
-        `http://${hostIP}:8090/add/${formData.value.id}/${formData.value.name}`,
-        {
-          method: "POST",
+      // console.log(JSON.stringify(formData.value))
+
+      fetch(`http://${hostIP}:8090/students`, {
+        method: "POST",
+        body: JSON.stringify(formData.value),
+
+        headers: {
+          "Content-Type": "application/json",
         },
-      )
+      })
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
           const appendedElement = document.createElement("div");
-          appendedElement.textContent = `I am ${data.name}`;
+          appendedElement.textContent = `update scuccess`;
           document.querySelector(".hello").appendChild(appendedElement);
         })
         .catch((error) => {

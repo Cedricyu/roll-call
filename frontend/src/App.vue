@@ -34,7 +34,13 @@ export default {
           icon: "bx-search-alt",
         },
         {
-          link: "/",
+          link: "/insert",
+          name: "Add Student",
+          tooltip: "Setting",
+          icon: "bx-cog",
+        },
+        {
+          link: "/login",
           name: "Setting",
           tooltip: "Setting",
           icon: "bx-cog",
