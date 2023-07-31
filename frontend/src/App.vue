@@ -5,7 +5,8 @@
       menuIcon="bxl-vuejs"
       menuTitle="roll-call"
       :menuItems="menuItems"
-      isUsedVueRouter="true"
+      :isUsedVueRouter="true"
+      @button-exit-clicked = "onButtonExitClicked"
     />
   </div>
 </template>
@@ -17,6 +18,26 @@ export default {
   name: "App",
   components: {
     VueSidebarMenuAkahon,
+  },
+  methods :{
+    onButtonExitClicked() {
+      const hostIP = process.env.VUE_APP_BACKEND_URL; // Access the environment variable
+
+      fetch(`http://${hostIP}:8090/logout`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((error) => {
+          console.error("Error fetching user data:", error);
+        });
+      // Add your logout logic here
+    }
   },
   data() {
     return {

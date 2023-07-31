@@ -18,6 +18,9 @@ const routes = [
     path: "/insert",
     name: "insert",
     component: InsertPage,
+    meta: {
+      requiresAuth: true,
+   },
   },
   {
     path: "/login",

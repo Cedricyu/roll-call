@@ -4,7 +4,7 @@
           <h1>Sign In</h1>
           <el-form>
               <el-form-item label="Username">
-                  <el-input v-model="formData.email" placeholder="Enter your username"></el-input>
+                  <el-input v-model="formData.username" placeholder="Enter your username"></el-input>
               </el-form-item>
               <el-form-item label="Password">
                   <el-input v-model="formData.password" placeholder="Enter your password" type="password"></el-input>
@@ -22,7 +22,7 @@ export default {
   data() {
       return {
         formData: {
-          email: '',
+          username: '',
           password: '',
           loginError: false,
         }
@@ -32,9 +32,10 @@ export default {
       login() {
           if (this.formData.username === '' || this.formData.password === '') {
               this.loginError = true;
+              console.log("please input name")
           } else {
 
-            console.log(this.formData.email,this.formData.password)
+            console.log(this.formData.username,this.formData.password)
             const hostIP = process.env.VUE_APP_BACKEND_URL; // Access the environment variable
 
             fetch(`http://${hostIP}:8090/login`,{
