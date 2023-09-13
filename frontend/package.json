@@ -27,7 +27,9 @@
     "util": "^0.12.5",
     "vue": "^3.2.26",
     "vue-router": "^4.2.4",
-    "vue-sidebar-menu-akahon": "^1.0.2"
+    "vue-sidebar-menu-akahon": "^1.0.2",
+    "vuex": "^4.1.0",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.19.3/xlsx-0.19.3.tgz"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

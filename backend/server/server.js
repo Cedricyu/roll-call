@@ -1,4 +1,4 @@
-const { getStudents, addStudents } = require("./db");
+const { getStudents, addStudents , addEvent , printTable , updateEventToTrue , update_students } = require("./db");
 
 const express = require("express");
 
@@ -9,6 +9,7 @@ app.use(express.json());
 const cors = require("cors");
 
 const con = require("./db");
+
 
 const session = require('express-session')
 const { v4: uuidv4 } = require('uuid');
@@ -29,7 +30,8 @@ app.use(session({
 }))
 
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://192.168.0.67:8080');
+  console.log(req.body)
+  res.setHeader('Access-Control-Allow-Origin', 'http://192.168.8.124:8080');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   res.setHeader('Access-Control-Allow-Credentials', true);
@@ -44,22 +46,21 @@ app.get("/students/:id", async (req, res, next) => {
 });
 
 app.post("/students", async (req, res, next) => {
-  console.log(req.body)
   const result = await addStudents(req.body.id, req.body.name);
   res.send({ message: "Successfully added student!" }); // Sending a response back to the client
 });
 
+app.post("/addevent", async (req, res, next) => {
+  const result = await addEvent(req.body.columnName);
+  res.send({ message: "Successfully added event!" }); // Sending a response back to the client
+});
+
 const users = [
-  {
-    firstName: 'Tony',
-    email: 'tony@stark.com',
-    password: 'iamironman'
-  },
   {
     firstName : 'root',
     password : 'password'
   }
-  ]
+]
 
 app.post('/login', (req, res) => {
   
@@ -74,12 +75,19 @@ app.post('/login', (req, res) => {
       // res.set('Set-Cookie',`session=${sessionId}`)
       req.session.user = user.firstName
       console.log(req.session)
-      return res.send({ message: 'Password or email is correct, welcome!' })
+      return res.status(200).json({ success: true, message: 'Password or email is correct, welcome!' });
     }
   }
-  return res.send({ message: 'Password or email is incorrect, please try again!' })
+  return res.status(400).json({ success: false, message: 'Password or email is incorrect, please try again!' });
 })
 
+app.post('/update', async(req, res) => {
+  
+  const { student_id } = req.body
+  const result = await updateEventToTrue(student_id)
+  
+  return res.send({ message: 'Password or email is incorrect, please try again!' })
+})
 
 app.get('/logout', (req, res) => {
   
@@ -89,7 +97,7 @@ app.get('/logout', (req, res) => {
     return res.send({ message: 'GoodBye, Have a nice day!' })
 })
 
-app.get("/print", (req, res) => {
+app.get("/printSessions", (req, res) => {
   sessionStore.all((err, sessions) => {
     if (err) {
       console.error("Error fetching sessions:", err);
@@ -100,6 +108,26 @@ app.get("/print", (req, res) => {
     res.send("Session data has been printed in the server console.");
   });
 });
+
+app.get("/printTable", async(req, res) => {
+    const result = await printTable();
+    //console.log(result);
+    res.send(result);
+});
+
+app.post("/upload/:weekno", async(req, res) => {
+  
+  try {
+    const week = req.params.weekno;
+    console.log('week =', week);
+    const result = req.body;
+    await update_students(result, week);
+    res.json({ message: 'File uploaded and processed successfully.' });
+  } catch (error) {
+    console.error('Error processing the file:', error);
+    res.status(500).json({ error: 'An error occurred during processing.' });
+  }
+})
 
 
 const port = 8090;

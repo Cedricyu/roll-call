@@ -1,7 +1,7 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
+  <div class="custom-container">
     <a-space direction="vertical">
+      <h1>{{ msg }}</h1>
       <form>
         <a-input
           v-model:value.lazy="formData.name"
@@ -81,5 +81,11 @@ li {
 }
 a {
   color: #42b983;
+}
+.custom-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 </style>

@@ -3,23 +3,26 @@
     <router-view />
     <VueSidebarMenuAkahon
       menuIcon="bxl-vuejs"
-      menuTitle="roll-call"
+      menuTitle="zoe's class"
       :menuItems="menuItems"
       :isUsedVueRouter="true"
-      @button-exit-clicked = "onButtonExitClicked"
+      profileName="CEDRIC YU"
+      @button-exit-clicked="onButtonExitClicked"
     />
   </div>
 </template>
 
 <script>
 import VueSidebarMenuAkahon from "vue-sidebar-menu-akahon";
+import { mapActions } from "vuex";
 
 export default {
   name: "App",
   components: {
     VueSidebarMenuAkahon,
   },
-  methods :{
+  methods: {
+    ...mapActions(["login", "logout"]),
     onButtonExitClicked() {
       const hostIP = process.env.VUE_APP_BACKEND_URL; // Access the environment variable
 
@@ -31,23 +34,18 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
+          this.logout();
           console.log(data);
         })
         .catch((error) => {
           console.error("Error fetching user data:", error);
         });
       // Add your logout logic here
-    }
+    },
   },
   data() {
     return {
       menuItems: [
-        {
-          link: "/",
-          name: "User",
-          tooltip: "User",
-          icon: "bx-user",
-        },
         {
           link: "/search",
           name: "Search",
@@ -55,13 +53,7 @@ export default {
           icon: "bx-search-alt",
         },
         {
-          link: "/insert",
-          name: "Add Student",
-          tooltip: "Setting",
-          icon: "bx-cog",
-        },
-        {
-          link: "/login",
+          link: "/setting",
           name: "Setting",
           tooltip: "Setting",
           icon: "bx-cog",
