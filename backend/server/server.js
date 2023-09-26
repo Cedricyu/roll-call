@@ -133,12 +133,19 @@ app.post("/upload/:weekno", async(req, res) => {
 const port = 8090;
 const host = "0.0.0.0"; // Listen on all available network interfaces
 
-const os = require("os");
+const os = require('os');
 
+// Check if "ens33" interface exists in networkInterfaces
 const networkInterfaces = os.networkInterfaces();
-// console.log(networkInterfaces);
+const hostIP = networkInterfaces["ens33"] && networkInterfaces["ens33"][0] && networkInterfaces["ens33"][0].address;
 
-const hostIP = networkInterfaces["ens33"][0].address;
+if (hostIP) {
+  // Use hostIP in your code
+  console.log("Server is running at http://" + hostIP + ":" + port);
+} else {
+  console.error('Failed to retrieve host IP.');
+}
+
 
 const corsOptions = {
   origin: `http://${hostIP}:8080`, // Change this to the actual origin of your frontend
@@ -149,6 +156,5 @@ app.use(cors(corsOptions));
 
 
 app.listen(port, host, () => {
-  console.log("Server is running at http://" + hostIP + ":" + port);
   console.log("Running on port " + port);
 });
