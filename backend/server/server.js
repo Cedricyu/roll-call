@@ -148,9 +148,10 @@ if (hostIP) {
 
 
 const corsOptions = {
-  origin: `http://${hostIP}:8080`, // Change this to the actual origin of your frontend
+  origin: 'http://34.80.19.182', // Update this to the correct origin
   credentials: true, // Allow cookies to be sent from the frontend
 };
+
 
 app.use(cors(corsOptions));
 
