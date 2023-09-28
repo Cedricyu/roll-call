@@ -155,7 +155,7 @@ const students_data = ref([]); // Initialize with an empty array
 const load_table = () => {
   const hostIP = process.env.VUE_APP_BACKEND_URL; // Access the environment variable
 
-  fetch(`http://${hostIP}:8090/printTable`, {
+  fetch(`http://${hostIP}:90/printTable`, {
     method: "GET",
     credentials: "include",
     headers: {
