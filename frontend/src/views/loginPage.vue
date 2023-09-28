@@ -50,7 +50,7 @@ export default {
         console.log(this.formData.username, this.formData.password);
         const hostIP = process.env.VUE_APP_BACKEND_URL; // Access the environment variable
 
-        fetch(`http://${hostIP}:8090/login`, {
+        fetch(`http://${hostIP}/backend/login`, {
           method: "POST",
           body: JSON.stringify(this.formData),
           credentials: "include",
