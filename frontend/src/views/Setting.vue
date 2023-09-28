@@ -38,7 +38,7 @@ const submit = () => {
     console.log("JSON Data:", jsonData);   
     const hostIP = process.env.VUE_APP_BACKEND_URL; // Access the environment variable
 
-    fetch(`http://${hostIP}:8090/upload/${value.value}`, {
+    fetch(`https://${hostIP}/upload/${value.value}`, {
             method: "POST",
             body: JSON.stringify(jsonData),
             credentials: "include",

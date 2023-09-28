@@ -43,7 +43,7 @@ function submitForm() {
 }
 
 function confirm() {
-  fetch(`http://${hostIP}:8090/update`, {
+  fetch(`https://${hostIP}/update`, {
     method: "POST",
     body: JSON.stringify(student_id.value),
     headers: {
