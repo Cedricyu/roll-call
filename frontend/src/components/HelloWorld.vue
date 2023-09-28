@@ -31,7 +31,7 @@ var student_name = ref("");
 
 function submitForm() {
   // You can handle the form submission here
-  fetch(`http://${hostIP}:8090/students/${student_id.value}`)
+  fetch(`http://${hostIP}:90/students/${student_id.value}`)
     .then((response) => response.json())
     .then((data) => {
       student_name.value = data.name;
@@ -43,7 +43,7 @@ function submitForm() {
 }
 
 function confirm() {
-  fetch(`https://${hostIP}/update`, {
+  fetch(`http://${hostIP}:90/update`, {
     method: "POST",
     body: JSON.stringify(student_id.value),
     headers: {
