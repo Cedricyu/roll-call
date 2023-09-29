@@ -31,7 +31,7 @@ app.use(session({
 
 app.use((req, res, next) => {
   console.log(req.body)
-  res.setHeader('Access-Control-Allow-Origin', 'http://34.80.19.182');
+  res.setHeader('Access-Control-Allow-Origin', 'http://35.229.199.168');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   res.setHeader('Access-Control-Allow-Credentials', true);
@@ -148,7 +148,7 @@ if (hostIP) {
 
 
 const corsOptions = {
-  origin: 'http://34.80.19.182', // Update this to the correct origin
+  origin: 'http:/35.229.199.168', // Update this to the correct origin
   credentials: true, // Allow cookies to be sent from the frontend
 };
 
