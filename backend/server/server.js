@@ -148,7 +148,7 @@ if (hostIP) {
 
 
 const corsOptions = {
-  origin: 'http:/35.229.199.168', // Update this to the correct origin
+  origin: 'http://35.229.199.168', // Update this to the correct origin
   credentials: true, // Allow cookies to be sent from the frontend
 };
 
