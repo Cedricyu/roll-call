@@ -11,4 +11,5 @@ module.exports = defineConfig({
     },
   },
   transpileDependencies: true, // You can keep your existing configuration here
+  publicPath: '/cedric_project/',
 });
