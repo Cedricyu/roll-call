@@ -41,6 +41,7 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(),
+  base: '/cedric_project/', // Set the base path
   routes,
 });
 
