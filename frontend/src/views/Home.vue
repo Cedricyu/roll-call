@@ -1,37 +1,26 @@
 <template>
-  <el-input
-    v-model="textarea"
-    :autosize="{ minRows: 2, maxRows: 4 }"
-    type="textarea"
-    placeholder="Please input"
-  />
-  <button id="start" @click="playChuck">Play</button>
+  <section class="content">
+    <ProfileItem
+        v-for="profile in profileList"
+        :key="profile.url"
+        :profile="profile"
+    />
+	</section>
 </template>
 
 
 <script setup>
-import { ref } from 'vue';
-import { Chuck } from 'webchuck';
+import ProfileItem from '../components/profileItem.vue'
 
-const textarea = ref('');
-const theChuck = ref(null);
-
-const playChuck = async () => {
-  try {
-    const audioContext = new AudioContext();
-    if (audioContext.state === "suspended") {
-        await audioContext.resume();
-    }
-    theChuck.value = await Chuck.init([],audioContext);
-    theChuck.value.runCode(`
-    SinOsc sin => dac;
-    440 => sin.freq;
-    1::second => now;
-    `);
-  } catch (error) {
-    console.error('Error initializing Chuck:', error);
-  }
-};
+// Placeholder profile object
+const profileList = [{
+  githubUrl: 'https://github.com/Cedricyu',
+  nickName: 'Cedricyu',
+  timestamp: 1696035663, // Replace with an actual timestamp
+  hasGif: true, // Replace with true or false based on whether the profile has a GIF
+  previewImageUrl: 'https://example.com/preview-image.jpg', // Replace with the actual URL of the preview image
+  height: 300, // Replace with the actual height of the image
+}];
 </script>
 
 
@@ -42,5 +31,11 @@ export default {
 </script>
 
 <style>
-/* ... your styles ... */
+.content {
+	display: flex;
+	justify-content: center;
+	width: 850px;
+	margin: 0 auto;
+	padding: 60px 0;
+}
 </style>

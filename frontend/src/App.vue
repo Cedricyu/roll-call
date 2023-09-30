@@ -1,6 +1,9 @@
 <template>
   <div>
-    <router-view />
+    <div>
+      <BreadCrumb />
+      <router-view />
+    </div>
     <VueSidebarMenuAkahon
       menuIcon="bxl-vuejs"
       menuTitle="zoe's class"
@@ -15,11 +18,13 @@
 <script>
 import VueSidebarMenuAkahon from "vue-sidebar-menu-akahon";
 import { mapActions } from "vuex";
+import BreadCrumb from "./components/breadcrumb.vue"
 
 export default {
   name: "App",
   components: {
     VueSidebarMenuAkahon,
+    BreadCrumb
   },
   methods: {
     ...mapActions(["login", "logout"]),
@@ -46,6 +51,12 @@ export default {
   data() {
     return {
       menuItems: [
+        {
+          link: "/",
+          name: "Home",
+          tooltip: "Home",
+          icon: "bx bx-home",
+        },
         {
           link: "/search",
           name: "Search",

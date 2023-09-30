@@ -9,21 +9,21 @@ import SetPage from "./views/Setting";
 const routes = [
   {
     path: "/search",
-    name: "searchpage",
+    name: "Search",
     component: Search,
   },
   {
     path: "/",
-    name: "home",
+    name: "Home",
     component: Home,
   },
   {
     path: "/login",
-    name: "login",
+    name: "Login",
     component: LoginPage,
   },
   {
-    path: "/admin",
+    path: "/Admin",
     meta: { requireAuth: true }, // 用來作為此頁是否需要權限驗證的設定
     children: [
       {

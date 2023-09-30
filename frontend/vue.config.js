@@ -1,4 +1,14 @@
 const { defineConfig } = require("@vue/cli-service");
+
 module.exports = defineConfig({
-  transpileDependencies: true,
+  configureWebpack: {
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          vendors: false, // Disable the vendors chunk
+        },
+      },
+    },
+  },
+  transpileDependencies: true, // You can keep your existing configuration here
 });
