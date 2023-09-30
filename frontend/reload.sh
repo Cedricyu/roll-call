@@ -1,4 +1,4 @@
-#!/bin/bashs
+#!/bin/bash
 
 sudo rm -r /var/www/html/dist/*
 
