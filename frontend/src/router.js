@@ -50,7 +50,7 @@ router.beforeEach((to, from, next) => {
   console.log(isLoggedIn);
 
   if (to.meta.requireAuth && !isLoggedIn) {
-    next({ name: "login" }); // This line may cause the issue
+    next({ name: "Login" }); // This line may cause the issue
   } else {
     next();
   }
