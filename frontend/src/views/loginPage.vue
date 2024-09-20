@@ -48,12 +48,11 @@ export default {
         console.log("please input name");
       } else {
         console.log(this.formData.username, this.formData.password);
-        const hostIP = process.env.VUE_APP_BACKEND_URL; // Access the environment variable
+        const hostIP = import.meta.env.VITE_BACKEND_URL; // Using Vite's env variable syntax
 
-        fetch(`http://${hostIP}:90/login`, {
+        fetch(`${hostIP}/login`, {
           method: "POST",
           body: JSON.stringify(this.formData),
-          credentials: "include",
           headers: {
             "Content-Type": "application/json",
           },

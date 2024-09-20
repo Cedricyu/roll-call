@@ -25,13 +25,13 @@
 import { ref } from "vue"; // Import ref from Vue 3
 
 const student_id = ref("");
-const hostIP = process.env.VUE_APP_BACKEND_URL; // Access the environment variable
+const hostIP = import.meta.env.VITE_BACKEND_URL; // Using Vite's env variable syntax
 
 var student_name = ref("");
 
 function submitForm() {
   // You can handle the form submission here
-  fetch(`http://${hostIP}:90/students/${student_id.value}`)
+  fetch(`${hostIP}/${student_id.value}`)
     .then((response) => response.json())
     .then((data) => {
       student_name.value = data.name;

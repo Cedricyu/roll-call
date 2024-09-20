@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Search from "./views/Search.vue";
 import Home from "./views/Home.vue";
-import InsertPage from "./views/Insert";
-import LoginPage from "./views/loginPage";
+import InsertPage from "./views/Insert.vue";
+import LoginPage from "./views/loginPage.vue";
 import store from "./store";
-import SetPage from "./views/Setting";
+import SetPage from "./views/Setting.vue";
 
 const routes = [
   {

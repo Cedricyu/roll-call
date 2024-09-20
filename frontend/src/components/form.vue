@@ -36,7 +36,7 @@ export default {
 
       // console.log(JSON.stringify(formData.value))
 
-      fetch(`http://${hostIP}:90/students`, {
+      fetch(`http://${hostIP}:8090/students`, {
         method: "POST",
         body: JSON.stringify(formData.value),
 

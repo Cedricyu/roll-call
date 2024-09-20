@@ -1,0 +1,39 @@
+version: '3'
+services:
+  backend:
+    build: ./backend
+    container_name: backend_service
+    ports:
+      - "8090:8090"
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend_service
+    ports:
+      - "5173:5173"
+    environment:
+      - NODE_ENV=development
+    networks:
+      - app-network
+    depends_on:
+      - backend
+
+  db:
+    image: mysql:5.7
+    container_name: my_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: testdb
+    volumes:
+      - ./backend/server/backup.sql:/docker-entrypoint-initdb.d/backup.sql
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

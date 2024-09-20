@@ -36,9 +36,9 @@ const submit = () => {
     const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
 
     console.log("JSON Data:", jsonData);   
-    const hostIP = process.env.VUE_APP_BACKEND_URL; // Access the environment variable
+    const hostIP = import.meta.env.VITE_BACKEND_URL; // Using Vite's env variable syntax
 
-    fetch(`http://${hostIP}:90/upload/${value.value}`, {
+    fetch(`${hostIP}/${value.value}`, {
             method: "POST",
             body: JSON.stringify(jsonData),
             credentials: "include",
@@ -153,11 +153,10 @@ const open_error = () => {
 const students_data = ref([]); // Initialize with an empty array
 
 const load_table = () => {
-  const hostIP = process.env.VUE_APP_BACKEND_URL; // Access the environment variable
+  const hostIP = import.meta.env.VITE_BACKEND_URL; // Using Vite's env variable syntax
 
-  fetch(`http://${hostIP}:90/printTable`, {
+  fetch(`${hostIP}/printTable`, {
     method: "GET",
-    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
@@ -199,7 +198,7 @@ onMounted(() => {
     bg >Submit</el-button>
   </div>
   <div class="container">
-    <el-table :data="students_data[0]" 
+    <el-table :data="students_data" 
       style="width: 80%;"
       :height="400"
     >
