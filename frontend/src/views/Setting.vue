@@ -47,6 +47,29 @@ const addStudent = () => {
     });
 };
 
+const deleteStudent = (studentId) => {
+  const hostIP = import.meta.env.VITE_BACKEND_URL; // Using Vite's env variable syntax
+  fetch(`${hostIP}/students/${studentId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      if (response.ok) {
+        open_success(`Student ${studentId} deleted successfully!`);
+        load_table(); // Reload the table after deletion
+      } else {
+        throw new Error("Failed to delete the student.");
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching user data:", error);
+      console.error("Error deleting student:", error);
+      open_error();
+    });
+};
+
 const open_success = (message) => {
   ElNotification({
     title: "Success",

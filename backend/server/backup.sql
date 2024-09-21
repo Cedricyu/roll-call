@@ -51,7 +51,6 @@ INSERT INTO `STUDENTS` VALUES
 ('E11207001','Oeter Anne-Catherine',0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0),
 ('40871207h','Li Ting-xuan',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
 ('40975024H','Feng Kai-chen',0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0),
-('4940309S','Huang Jing-ting',0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0);
 
 ALTER TABLE STUDENTS CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
