@@ -42,8 +42,8 @@ app.use((req, res, next) => {
 // Login Route
 const users = [
   {
-    firstName: "cedric",
-    password: "891130",
+    firstName: "nycu",
+    password: "aiisgood",
   },
 ];
 
