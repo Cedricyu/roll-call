@@ -1,8 +1,7 @@
 <script setup>
 import XLSX from "xlsx"; // Import the xlsx library
-import { ElNotification } from 'element-plus'
-import { ref, onMounted } from 'vue';
-
+import { ElNotification } from "element-plus";
+import { ref, onMounted } from "vue";
 
 const submit = () => {
   console.log("submit excel");
@@ -35,120 +34,141 @@ const submit = () => {
     const sheetName = workbook.SheetNames[0];
     const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
 
-    console.log("JSON Data:", jsonData);   
+    console.log("JSON Data:", jsonData);
     const hostIP = import.meta.env.VITE_BACKEND_URL; // Using Vite's env variable syntax
 
     fetch(`${hostIP}/${value.value}`, {
-            method: "POST",
-            body: JSON.stringify(jsonData),
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data)
-      open_success();
+      method: "POST",
+      body: JSON.stringify(jsonData),
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
     })
-    .catch((error) => {
-      console.error("Error fetching user data:", error);
-      open_error();
-    });
-    };
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        open_success();
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+        open_error();
+      });
+  };
 
   reader.readAsArrayBuffer(file);
+};
 
-}
-const value = ref('')
-    
+const deleteStudent = (studentId) => {
+  const hostIP = import.meta.env.VITE_BACKEND_URL; // Using Vite's env variable syntax
+  fetch(`${hostIP}/students/${studentId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      if (response.ok) {
+        open_success(`Student ${studentId} deleted successfully!`);
+        load_table(); // Reload the table after deletion
+      } else {
+        throw new Error("Failed to delete the student.");
+      }
+    })
+    .catch((error) => {
+      console.error("Error deleting student:", error);
+      open_error();
+    });
+};
+
+const value = ref("");
+
 const options = [
   {
-    value: 'week1',
-    label: 'week1',
+    value: "week1",
+    label: "week1",
   },
   {
-    value: 'week2',
-    label: 'week2',
+    value: "week2",
+    label: "week2",
   },
   {
-    value: 'week3',
-    label: 'week3',
+    value: "week3",
+    label: "week3",
   },
   {
-    value: 'week4',
-    label: 'week4',
+    value: "week4",
+    label: "week4",
   },
   {
-    value: 'week5',
-    label: 'week5',
+    value: "week5",
+    label: "week5",
   },
   {
-    value: 'week5',
-    label: 'week5',
+    value: "week5",
+    label: "week5",
   },
   {
-    value: 'week6',
-    label: 'week6',
+    value: "week6",
+    label: "week6",
   },
   {
-    value: 'week7',
-    label: 'week7',
+    value: "week7",
+    label: "week7",
   },
   {
-    value: 'week8',
-    label: 'week8',
+    value: "week8",
+    label: "week8",
   },
   {
-    value: 'week9',
-    label: 'week9',
+    value: "week9",
+    label: "week9",
   },
   {
-    value: 'week10',
-    label: 'week10',
+    value: "week10",
+    label: "week10",
   },
   {
-    value: 'week11',
-    label: 'week11',
+    value: "week11",
+    label: "week11",
   },
   {
-    value: 'week12',
-    label: 'week12',
+    value: "week12",
+    label: "week12",
   },
   {
-    value: 'week13',
-    label: 'week13',
+    value: "week13",
+    label: "week13",
   },
   {
-    value: 'week14',
-    label: 'week14',
+    value: "week14",
+    label: "week14",
   },
   {
-    value: 'week15',
-    label: 'week15',
+    value: "week15",
+    label: "week15",
   },
   {
-    value: 'week16',
-    label: 'week16',
+    value: "week16",
+    label: "week16",
   },
-
-]
+];
 
 const open_success = () => {
   ElNotification({
-    title: 'Success',
-    message: 'This is a success message',
-    type: 'success',
-  })
-}
+    title: "Success",
+    message: "This is a success message",
+    type: "success",
+  });
+};
 
 const open_error = () => {
   ElNotification({
-    title: 'Error',
-    message: 'This is an error message',
-    type: 'error',
-  })
-}
+    title: "Error",
+    message: "This is an error message",
+    type: "error",
+  });
+};
 
 const students_data = ref([]); // Initialize with an empty array
 
@@ -163,7 +183,7 @@ const load_table = () => {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data)
+      console.log(data);
       students_data.value = data;
     })
     .catch((error) => {
@@ -182,9 +202,19 @@ onMounted(() => {
     <h3>上傳點名紀錄</h3>
     <section class="upload-section">
       <form id="upload-form" enctype="multipart/form-data">
-        <input type="file" name="excelFile" accept=".xlsx, .xls" class="upload-button"/>
+        <input
+          type="file"
+          name="excelFile"
+          accept=".xlsx, .xls"
+          class="upload-button"
+        />
       </form>
-      <el-select v-model="value" class="selection" placeholder="Select" size="small" >
+      <el-select
+        v-model="value"
+        class="selection"
+        placeholder="Select"
+        size="small"
+      >
         <el-option
           v-for="item in options"
           :key="item.value"
@@ -193,24 +223,32 @@ onMounted(() => {
         />
       </el-select>
     </section>
-    <el-button type="primary" class="submit-button" @click="submit" 
-    text
-    bg >Submit</el-button>
+    <el-button type="primary" class="submit-button" @click="submit" text bg
+      >Submit</el-button
+    >
   </div>
   <div class="container">
-    <el-table :data="students_data" 
-      style="width: 80%;"
-      :height="400"
-    >
+    <el-table :data="students_data" style="width: 80%" :height="400">
       <el-table-column fixed prop="id" label="Student No." width="150" />
       <el-table-column fixed prop="name" label="Name" width="120" />
       <el-table-column
-          v-for="weekNumber in 16"
-          :key="`week${weekNumber}`"
-          :prop="`week${weekNumber}`"
-          :label="`Week ${weekNumber}`"
-          width="120"
+        v-for="weekNumber in 16"
+        :key="`week${weekNumber}`"
+        :prop="`week${weekNumber}`"
+        :label="`Week ${weekNumber}`"
+        width="120"
       >
+      </el-table-column>
+      <el-table-column label="Actions" fixed="right" width="100">
+        <template #default="scope">
+          <el-button
+            type="danger"
+            icon="el-icon-delete"
+            @click="deleteStudent(scope.row.id)"
+          >
+            Delete
+          </el-button>
+        </template>
       </el-table-column>
     </el-table>
   </div>
@@ -224,25 +262,25 @@ export default {
 
 <style>
 :root {
-	--primary: #EA40A4;
-	--business: #3A82EE;
-	--personal: var(--primary);
-	--light: #EEE;
-	--grey: #888;
-	--dark: #313154;
-	--danger: #ff5b57;
+  --primary: #ea40a4;
+  --business: #3a82ee;
+  --personal: var(--primary);
+  --light: #eee;
+  --grey: #888;
+  --dark: #313154;
+  --danger: #ff5b57;
 
-	--shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 
-	--business-glow: 0px 0px 4px rgba(58, 130, 238, 0.75);
-	--personal-glow: 0px 0px 4px rgba(234, 64, 164, 0.75);
+  --business-glow: 0px 0px 4px rgba(58, 130, 238, 0.75);
+  --personal-glow: 0px 0px 4px rgba(234, 64, 164, 0.75);
 }
 
 * {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-	font-family: 'montserrat', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "montserrat", sans-serif;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -254,49 +292,47 @@ export default {
 }
 
 h3 {
-	color: var(--dark);
-	font-size: 1rem;
-	font-weight: 400;
-	margin-bottom: 0.5rem;
+  color: var(--dark);
+  font-size: 1rem;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
 }
 
-.container{
+.container {
   display: flex;
-	align-items: center;
+  align-items: center;
   justify-content: center;
   margin-top: 2.5rem;
 }
 
 section {
   display: flex;
-	align-items: center;
-	margin-top: 2rem;
-	margin-bottom: 2rem;
-	padding-left: 1.5rem;
-	padding-right: 1.5em;
+  align-items: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5em;
   border-radius: 0.5rem;
-	box-shadow: var(--shadow);
-	margin-bottom: 1rem;
-  width : 80%;
+  box-shadow: var(--shadow);
+  margin-bottom: 1rem;
+  width: 80%;
   margin: 0 auto;
 }
 .upload-section .upload-button {
-	display: flex;
-	align-items: center;
-	background-color: #FFF;
-	padding: 1rem;
-	border-radius: 0.5rem;
-	margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-top: 1rem;
   margin-bottom: 1rem;
   background-color: var(--light);
 }
-.upload-section .selection{
+.upload-section .selection {
   margin-left: 1rem;
 }
 
-.submit-button{
+.submit-button {
   margin-top: 2rem;
-
 }
-
 </style>
