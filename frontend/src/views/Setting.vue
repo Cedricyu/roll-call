@@ -1,163 +1,56 @@
 <script setup>
-import XLSX from "xlsx"; // Import the xlsx library
-import { ElNotification } from "element-plus";
 import { ref, onMounted } from "vue";
+import {
+  ElNotification,
+  ElDialog,
+  ElForm,
+  ElInput,
+  ElButton,
+} from "element-plus";
 
-const submit = () => {
-  console.log("submit excel");
-  const fileInput = document.querySelector('input[type="file"]');
+const students_data = ref([]);
+const isAddStudentModalVisible = ref(false);
+const newStudent = ref({ id: "", name: "" });
 
-  if (!fileInput.files.length) {
-    console.error("No file selected");
-    return;
-  }
-
-  const file = fileInput.files[0];
-
-  // Check if the selected file is of the right type (Excel format)
-  if (
-    file.type !==
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" &&
-    file.type !== "application/vnd.ms-excel"
-  ) {
-    console.error("Invalid file format. Please select an Excel file.");
-    return;
-  }
-
-  const reader = new FileReader();
-
-  reader.onload = (e) => {
-    const data = new Uint8Array(e.target.result);
-    const workbook = XLSX.read(data, { type: "array" });
-
-    // Assuming you want to read the first sheet (index 0)
-    const sheetName = workbook.SheetNames[0];
-    const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
-
-    console.log("JSON Data:", jsonData);
-    const hostIP = import.meta.env.VITE_BACKEND_URL; // Using Vite's env variable syntax
-
-    fetch(`${hostIP}/${value.value}`, {
-      method: "POST",
-      body: JSON.stringify(jsonData),
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        open_success();
-      })
-      .catch((error) => {
-        console.error("Error fetching user data:", error);
-        open_error();
-      });
-  };
-
-  reader.readAsArrayBuffer(file);
+const showAddStudentModal = () => {
+  isAddStudentModalVisible.value = true;
 };
 
-const deleteStudent = (studentId) => {
-  const hostIP = import.meta.env.VITE_BACKEND_URL; // Using Vite's env variable syntax
-  fetch(`${hostIP}/students/${studentId}`, {
-    method: "DELETE",
+const closeAddStudentModal = () => {
+  isAddStudentModalVisible.value = false;
+};
+
+const addStudent = () => {
+  const hostIP = import.meta.env.VITE_BACKEND_URL;
+
+  fetch(`${hostIP}/students`, {
+    method: "POST",
+    body: JSON.stringify(newStudent.value),
     headers: {
       "Content-Type": "application/json",
     },
   })
-    .then((response) => {
-      if (response.ok) {
-        open_success(`Student ${studentId} deleted successfully!`);
-        load_table(); // Reload the table after deletion
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        open_success("Student added successfully!");
+        load_table();
+        isAddStudentModalVisible.value = false;
+        newStudent.value = { id: "", name: "" }; // Reset form
       } else {
-        throw new Error("Failed to delete the student.");
+        throw new Error("Failed to add the student.");
       }
     })
     .catch((error) => {
-      console.error("Error deleting student:", error);
+      console.error("Error adding student:", error);
       open_error();
     });
 };
 
-const value = ref("");
-
-const options = [
-  {
-    value: "week1",
-    label: "week1",
-  },
-  {
-    value: "week2",
-    label: "week2",
-  },
-  {
-    value: "week3",
-    label: "week3",
-  },
-  {
-    value: "week4",
-    label: "week4",
-  },
-  {
-    value: "week5",
-    label: "week5",
-  },
-  {
-    value: "week5",
-    label: "week5",
-  },
-  {
-    value: "week6",
-    label: "week6",
-  },
-  {
-    value: "week7",
-    label: "week7",
-  },
-  {
-    value: "week8",
-    label: "week8",
-  },
-  {
-    value: "week9",
-    label: "week9",
-  },
-  {
-    value: "week10",
-    label: "week10",
-  },
-  {
-    value: "week11",
-    label: "week11",
-  },
-  {
-    value: "week12",
-    label: "week12",
-  },
-  {
-    value: "week13",
-    label: "week13",
-  },
-  {
-    value: "week14",
-    label: "week14",
-  },
-  {
-    value: "week15",
-    label: "week15",
-  },
-  {
-    value: "week16",
-    label: "week16",
-  },
-];
-
-const open_success = () => {
+const open_success = (message) => {
   ElNotification({
     title: "Success",
-    message: "This is a success message",
+    message,
     type: "success",
   });
 };
@@ -170,10 +63,8 @@ const open_error = () => {
   });
 };
 
-const students_data = ref([]); // Initialize with an empty array
-
 const load_table = () => {
-  const hostIP = import.meta.env.VITE_BACKEND_URL; // Using Vite's env variable syntax
+  const hostIP = import.meta.env.VITE_BACKEND_URL;
 
   fetch(`${hostIP}/printTable`, {
     method: "GET",
@@ -183,22 +74,21 @@ const load_table = () => {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
       students_data.value = data;
     })
     .catch((error) => {
-      console.error("Error fetching user data:", error);
+      console.error("Error fetching student data:", error);
       open_error();
     });
 };
 
 onMounted(() => {
-  load_table(); // Call the function to load data when the component is mounted
+  load_table();
 });
 </script>
 
 <template>
-  <div id="app">
+  <!-- <div id="app">
     <h3>上傳點名紀錄</h3>
     <section class="upload-section">
       <form id="upload-form" enctype="multipart/form-data">
@@ -226,8 +116,16 @@ onMounted(() => {
     <el-button type="primary" class="submit-button" @click="submit" text bg
       >Submit</el-button
     >
-  </div>
+  </div> -->
   <div class="container">
+    <el-button
+      type="primary"
+      class="add-student-button"
+      @click="showAddStudentModal"
+    >
+      New Student
+    </el-button>
+
     <el-table :data="students_data" style="width: 80%" :height="400">
       <el-table-column fixed prop="id" label="Student No." width="150" />
       <el-table-column fixed prop="name" label="Name" width="120" />
@@ -251,6 +149,26 @@ onMounted(() => {
         </template>
       </el-table-column>
     </el-table>
+  </div>
+
+  <div v-if="isAddStudentModalVisible" class="modal-overlay">
+    <div class="modal-content">
+      <h3>Add New Student</h3>
+      <div class="modal-body">
+        <el-form :model="newStudent" ref="addStudentForm">
+          <el-form-item label="Student No." prop="id">
+            <el-input v-model="newStudent.id" />
+          </el-form-item>
+          <el-form-item label="Name" prop="name">
+            <el-input v-model="newStudent.name" />
+          </el-form-item>
+        </el-form>
+      </div>
+      <div class="modal-footer">
+        <el-button type="primary" @click="addStudent">Add</el-button>
+        <el-button @click="closeAddStudentModal">Cancel</el-button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -300,6 +218,7 @@ h3 {
 
 .container {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   margin-top: 2.5rem;
@@ -334,5 +253,41 @@ section {
 
 .submit-button {
   margin-top: 2rem;
+}
+.add-student-button {
+  margin-bottom: 1rem;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 400px;
+}
+
+.modal-body {
+  margin-bottom: 1rem;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.modal-footer el-button {
+  margin-left: 10px;
 }
 </style>

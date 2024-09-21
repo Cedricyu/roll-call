@@ -1,9 +1,17 @@
 const express = require("express");
 const cors = require("cors");
 const session = require("express-session");
-const os = require("os");
+const { exec } = require("child_process");
+const path = require("path");
+const fs = require("fs");
 
-const { printTable, getStudents, updateEventToTrue, deleteStudent } = require("./db");
+const {
+  printTable,
+  getStudents,
+  updateEventToTrue,
+  deleteStudent,
+  addStudents,
+} = require("./db");
 
 const app = express();
 const sessionStore = new session.MemoryStore();
@@ -90,6 +98,32 @@ app.get("/students/:id", async (req, res, next) => {
   res.send({ message: "Successfully added student!" }); // Sending a response back to the client
 });
 
+app.post("/students", async (req, res) => {
+  const { id, name } = req.body;
+
+  if (!id || !name) {
+    return res.status(400).json({
+      success: false,
+      message: "Student ID and name are required.",
+    });
+  }
+
+  try {
+    await addStudents(id, name);
+    res.status(201).json({
+      success: true,
+      message: "Student added successfully!",
+    });
+  } catch (error) {
+    console.error("Error adding student:", error);
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while adding the student.",
+    });
+  }
+});
+
+
 app.put("/students/:id/week/:week", async (req, res) => {
   const { id, week } = req.params;
 
@@ -141,6 +175,46 @@ app.delete("/students/:id", async (req, res) => {
     });
   }
 });
+
+
+// app.get("/backup", (req, res) => {
+//   // Define the path and filename for the backup
+//   const backupFile = path.join(__dirname, `backup_${Date.now()}.sql`);
+
+//   // Use mysqldump to create a backup of the database
+//   const command = `docker exec my_mysql mysqldump -u root -ppassword testdb > ${backupFile}`;
+
+//   exec(command, (err, stdout, stderr) => {
+//     if (err) {
+//       console.error(`Error during backup: ${stderr}`);
+//       return res.status(500).json({
+//         success: false,
+//         message: "An error occurred during the backup.",
+//       });
+//     }
+
+//     // Read the backup file and send it as a download
+//     fs.readFile(backupFile, (err, data) => {
+//       if (err) {
+//         console.error(`Error reading backup file: ${err}`);
+//         return res.status(500).json({
+//           success: false,
+//           message: "An error occurred while reading the backup file.",
+//         });
+//       }
+
+//       res.setHeader("Content-Disposition", `attachment; filename=${path.basename(backupFile)}`);
+//       res.setHeader("Content-Type", "application/sql");
+//       res.send(data);
+
+//       // Optionally delete the backup file after sending it
+//       fs.unlink(backupFile, (err) => {
+//         if (err) console.error(`Error deleting backup file: ${err}`);
+//       });
+//     });
+//   });
+// });
+
 // Server Configuration
 const port = 8090;
 const host = "0.0.0.0";
